@@ -3,7 +3,6 @@ package it.polito.tdp.nobel;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Set;
 
 import it.polito.tdp.nobel.model.Esame;
 import it.polito.tdp.nobel.model.Model;
@@ -34,21 +33,24 @@ public class FXMLController {
 
     @FXML
     void doCalcolaCombinazione(ActionEvent event) {
+    	
     	txtResult.clear();
+    	
     	try {
     		int numeroCrediti = Integer.parseInt(txtInput.getText());
     			
     		long start = System.currentTimeMillis();
-    		Set<Esame> voti = model.calcolaSottoinsiemeEsami(numeroCrediti);
+    		List<Esame> voti = model.calcolaSottoinsiemeEsami(numeroCrediti);
     		long end = System.currentTimeMillis();
     		
-    		if(voti == null) {
+    		if(voti == null || voti.size() == 0) {
     			txtResult.appendText("Non ho trovato soluzioni\n");
     			return ;
     		}
     			
     		txtResult.appendText("TEMPO IMPIEGATO: " + (end-start) + " ms\n\n");
     		txtResult.appendText("MEDIA: " + this.model.calcolaMedia(voti) + "\n\n");
+    		txtResult.appendText("CASI TESTATI: " + this.model.getCasiTestati() + "\n\n");
     			
     		for(Esame e : voti) {
     			txtResult.appendText(e.toString() + "\n");
